@@ -5,7 +5,7 @@
   "main": "lib/sdk.js",
   "scripts": {
     "test": "echo \"Error: no tests exist\" && exit 1",
-    "prepublish": "coffee -o lib/ -c src/sdk.coffee"
+    "prepublish": "coffee --bare -o lib/ -c src/*.coffee && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js"
   },
   "repository": {
     "type": "git",
