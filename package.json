@@ -1,0 +1,34 @@
+{
+  "name": "phantombuster-sdk",
+  "version": "0.0.1",
+  "description": "Phantombuster's SDK",
+  "main": "lib/sdk.js",
+  "scripts": {
+    "test": "echo \"Error: no tests exist\" && exit 1",
+    "prepublish": "coffee -o lib/ -c src/sdk.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phantombuster/sdk.git"
+  },
+  "keywords": [
+    "phantombuster",
+    "capserjs",
+    "phantomjs",
+    "sdk"
+  ],
+  "author": "Martin Tapia <martin@phantombuster.com> (https://phantombuster.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phantombuster/sdk/issues",
+    "email": "martin@phantombuster.com"
+  },
+  "homepage": "https://github.com/phantombuster/sdk",
+  "preferGlobal": true,
+  "bin": {
+    "phantombuster": "lib/sdk.js"
+  },
+  "devDependencies": {
+    "coffee-script": "*"
+  }
+}
