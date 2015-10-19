@@ -30,5 +30,11 @@
   },
   "devDependencies": {
     "coffee-script": "*"
+  },
+  "dependencies": {
+    "cson": "3.0.x",
+    "node-watch": "0.3.x",
+    "yargs": "3.27.x",
+    "needle": "0.10.x"
   }
 }
