@@ -33,8 +33,9 @@ This file is simple and self explanatory. The small example below is enough to u
 Usage
 -----
 
-`phantombuster [-c config.cson] [script.coffee]`
+`phantombuster [-c config.cson] [script.coffee [other.coffee...]]`
 
 * The most typical usage is to watch for file modification while coding. Simply execute `phantombuster` in a directory containing `phantombuster.cson`.
 * Specify a different file than `phantombuster.cson`: `phantombuster -c config.cson`
 * Upload a specific script to Phantombuster (without watching): `phantombuster project/script.coffee` (must be a value in one of the `scripts` objects in `phantombuster.cson`)
+* Update your whole project: `phantombuster project/*.coffee`

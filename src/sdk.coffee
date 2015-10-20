@@ -3,14 +3,19 @@ path = require 'path'
 cson = require 'cson'
 needle = require 'needle'
 watch = require 'node-watch'
+validate = require('is-my-json-valid')(require './configuration-schema.json')
 argv = require('yargs').argv
 
-script = argv._?[0] or null
 configPath = argv.c or 'phantombuster.cson'
 
 loadConfig = (configPath) ->
-	# TODO json schema validation
-	cson.load configPath
+	config = cson.load configPath
+	if validate config
+		return config
+	else
+		console.log "#{configPath} is not a correct SDK configuration file"
+		console.log JSON.stringify validate.errors
+		process.exit 1
 
 try
 
@@ -24,7 +29,7 @@ try
 				if path.join(baseDir, localScript) is updatedPath
 					fs.readFile updatedPath, (err, text) ->
 						if err
-							console.log "[#{account.name}] #{updatedPath}: #{err.toString()}"
+							console.log "#{account.name}: #{localScript}: #{err.toString()}"
 						else
 							options =
 								headers:
@@ -33,19 +38,16 @@ try
 								text: text.toString()
 							needle.post "https://phantombuster.com/api/v1/script/#{pbScript}", payload, options, (err, res) ->
 								if err
-									console.log "[#{account.name}] #{updatedPath}: #{err.toString()}"
+									console.log "#{account.name}: #{localScript}: #{err.toString()}"
 								else
 									if res.body?.status is 'success'
-										if typeof(res.body.data) is 'number'
-											console.log "[#{account.name}] #{updatedPath}: New script #{pbScript} created"
-										else
-											console.log "[#{account.name}] #{updatedPath}: Script #{pbScript} updated"
+										console.log "#{account.name}: #{localScript} -> #{pbScript}#{if typeof(res.body.data) is 'number' then ' (new script created)' else ''}"
 									else
-										console.log "[#{account.name}] #{updatedPath}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
-					return
+										console.log "#{account.name}: #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
 
-	if script
-		updateScript fs.realpathSync script
+	if argv._?.length
+		for script in argv._
+			updateScript fs.realpathSync script
 	else
 		watch baseDir, (updatedPath) ->
 			if updatedPath is configPath
