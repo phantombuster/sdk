@@ -24,26 +24,28 @@ try
 	config = loadConfig configPath
 
 	updateScript = (updatedPath) ->
-		for account in config
-			for pbScript, localScript of account.scripts
-				if path.join(baseDir, localScript) is updatedPath
-					fs.readFile updatedPath, (err, text) ->
+		upload = (account, pbScript, localScript, updatedPath) ->
+			fs.readFile updatedPath, (err, text) ->
+				if err
+					console.log "#{account.name}: #{localScript}: #{err.toString()}"
+				else
+					options =
+						headers:
+							'X-Phantombuster-Key-1': account.apiKey
+					payload =
+						text: text.toString()
+					needle.post "https://phantombuster.com/api/v1/script/#{pbScript}", payload, options, (err, res) ->
 						if err
 							console.log "#{account.name}: #{localScript}: #{err.toString()}"
 						else
-							options =
-								headers:
-									'X-Phantombuster-Key-1': account.apiKey
-							payload =
-								text: text.toString()
-							needle.post "https://phantombuster.com/api/v1/script/#{pbScript}", payload, options, (err, res) ->
-								if err
-									console.log "#{account.name}: #{localScript}: #{err.toString()}"
-								else
-									if res.body?.status is 'success'
-										console.log "#{account.name}: #{localScript} -> #{pbScript}#{if typeof(res.body.data) is 'number' then ' (new script created)' else ''}"
-									else
-										console.log "#{account.name}: #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
+							if res.body?.status is 'success'
+								console.log "#{account.name}: #{localScript} -> #{pbScript}#{if typeof(res.body.data) is 'number' then ' (new script created)' else ''}"
+							else
+								console.log "#{account.name}: #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
+		for account in config
+			for pbScript, localScript of account.scripts
+				if path.join(baseDir, localScript) is updatedPath
+					upload account, pbScript, localScript, updatedPath
 
 	if argv._?.length
 		for script in argv._
