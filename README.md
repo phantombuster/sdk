@@ -5,7 +5,13 @@ https://phantombuster.com/cloud-services
 
 Provides the `phantombuster` command to facilitate development of scripts for Phantombuster.
 
-To install: `sudo npm install -g phantombuster-sdk` (recommended) or `npm install phantombuster-sdk`
+To install:
+
+`sudo npm install -g phantombuster-sdk` (recommended)
+
+or
+
+`npm install phantombuster-sdk`
 
 For now, the only feature provided is the uploading of scripts via Phantombuster's API.
 
@@ -39,3 +45,5 @@ Usage
 * Specify a different file than `phantombuster.cson`: `phantombuster -c config.cson`
 * Upload a specific script to Phantombuster (without watching): `phantombuster project/script.coffee` (must be a value in one of the `scripts` objects in `phantombuster.cson`)
 * Update your whole project: `phantombuster project/*.coffee`
+
+See the full documentation here: http://docs.phantombuster.com/en/latest/sdk.html
