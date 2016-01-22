@@ -36,6 +36,7 @@ try
 							'X-Phantombuster-Key-1': account.apiKey
 					payload =
 						text: text.toString()
+						source: 'sdk'
 					needle.post "https://phantombuster.com/api/v1/script/#{pbScript}", payload, options, (err, res) ->
 						if err
 							console.log "#{datePrefix()}#{account.name}: #{localScript}: #{err.toString()}"
