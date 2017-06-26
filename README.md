@@ -1,7 +1,7 @@
 phantombuster-sdk
 =================
 
-https://phantombuster.com/cloud-services
+https://phantombuster.com/
 
 Provides the `phantombuster` command to facilitate development of scripts for Phantombuster.
 
