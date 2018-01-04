@@ -1,6 +1,6 @@
 {
   "name": "phantombuster-sdk",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "Phantombuster's SDK",
   "main": "lib/sdk.js",
   "scripts": {
