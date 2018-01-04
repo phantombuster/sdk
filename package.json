@@ -15,7 +15,10 @@
     "phantombuster",
     "capserjs",
     "phantomjs",
-    "sdk"
+    "sdk",
+    "headless",
+    "chrome",
+    "scraping"
   ],
   "author": "Martin Tapia <martin@phantombuster.com> (https://phantombuster.com)",
   "license": "ISC",

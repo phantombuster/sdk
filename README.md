@@ -23,17 +23,17 @@ The SDK works with `phantombuster.cson`. This file must be located alongside the
 This file is simple and self explanatory. The small example below is enough to understand everything:
 
     [
-        name: 'Excellent project 1' # Arbitrary name, only used for clarity
+        name: 'Excellent project 1' # Arbitrary name, only used for logs
         apiKey: 'xxxx' # Phantombuster API key (which identifies the account)
         # Mappings of Phantombuster script names to local script files (relative to the phantombuster.cson file)
         scripts:
-            'scraping.coffee': 'project1/scraping.coffee'
+            'scraping.js': 'project1/scraping.js'
             'export.js': 'project1/export.js'
     ,
         name: 'Cool project 2'
         apiKey: 'another xxxx'
         scripts:
-            'some-casperjs-browsing.coffee': 'folder/script.coffee'
+            'some-casperjs-browsing.js': 'folder/script.js'
     ]
 
 Usage

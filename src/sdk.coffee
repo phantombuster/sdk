@@ -6,6 +6,7 @@ watch = require 'node-watch'
 validate = require('is-my-json-valid')(require './configuration-schema.json')
 argv = require('yargs').argv
 
+defaultEndpoint = 'https://phantombuster.com/api/v1'
 configPath = argv.c or 'phantombuster.cson'
 
 datePrefix = () -> (new Date).toLocaleTimeString() + ' - '
@@ -37,7 +38,7 @@ try
 					payload =
 						text: text.toString()
 						source: 'sdk'
-					needle.post "https://phantombuster.com/api/v1/script/#{pbScript}", payload, options, (err, res) ->
+					needle.post "#{account.endpoint or defaultEndpoint}/script/#{pbScript}", payload, options, (err, res) ->
 						if err
 							console.log "#{datePrefix()}#{account.name}: #{localScript}: #{err.toString()}"
 						else
