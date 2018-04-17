@@ -46,4 +46,4 @@ Usage
 * Upload a specific script to Phantombuster (without watching): `phantombuster project/script.coffee` (must be a value in one of the `scripts` objects in `phantombuster.cson`)
 * Update your whole project: `phantombuster project/*.coffee`
 
-See the full documentation here: http://docs.phantombuster.com/en/latest/sdk.html
+See the full documentation here: https://hub.phantombuster.com/docs/sdk
