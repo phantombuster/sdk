@@ -36,38 +36,36 @@ try
 				headers:
 					'X-Phantombuster-Key-1': account.apiKey
 			payload =
-				infoString: jsonText
-				markdown: mdText
-			console.log '>>> json ' + jsonText
-			console.log '>>> markdown ' + mdText
+				infoString: jsonText.toString()
+				markdown: mdText.toString()
 			needle.post "#{account.endpoint or defaultEndpoint}/store-info/by-name/#{pbScript}", payload, options, (err, res) ->
 				if err
-					console.log "#{datePrefix()}#{account.name}: [API-STORE] #{localScript}: #{err.toString()}"
+					console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript}: #{err.toString()}"
 				else
 					if res.body?.status is 'success'
-						console.log "#{datePrefix()}#{account.name}: [API-STORE] #{localScript} -> #{pbScript}"
+						console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript} -> #{pbScript}"
 					else
-						console.log "#{datePrefix()}#{account.name}: [API-STORE] #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
+						console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
 		nbUploads = 0
 		for account in config
 			for pbScript, localScript of account.scripts
 				if path.join(baseDir, localScript) in [linkedScriptJs, linkedScriptCoffee]
 					fs.readFile jsonFile, (err, jsonText) ->
 						if err
-							console.log "#{datePrefix()}#{account.name}: [API-STORE] #{jsonFile}: #{err.toString()}"
+							console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{err.toString()}"
 						else
-							#try
-							#	JSON.parse jsonText
-							#catch e
-							#	err = e
-							#if err
-							#	console.log "#{datePrefix()}#{account.name}: [API-STORE] #{jsonFile}: #{err.toString()}"
-							#else
-							fs.readFile mdFile, (err, mdText) ->
-								if err
-									console.log "#{datePrefix()}#{account.name}: [API-STORE] #{mdFile}: #{err.toString()}"
-								else
-									upload account, pbScript, localScript, jsonText, mdText
+							try
+								JSON.parse jsonText
+							catch e
+								err = e
+							if err
+								console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{err.toString()}"
+							else
+								fs.readFile mdFile, (err, mdText) ->
+									if err
+										console.log "#{datePrefix()}#{account.name}: [API store settings] #{mdFile}: #{err.toString()}"
+									else
+										upload account, pbScript, localScript, jsonText, mdText
 					++nbUploads
 		return nbUploads
 
