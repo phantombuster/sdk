@@ -51,20 +51,25 @@ try
 			for pbScript, localScript of account.scripts
 				if path.join(baseDir, localScript) in [linkedScriptJs, linkedScriptCoffee]
 					fs.readFile jsonFile, (err, jsonText) ->
-						if err
+						if err and (err.code isnt 'ENOENT')
 							console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{err.toString()}"
 						else
-							try
-								JSON.parse jsonText
-							catch e
-								err = e
 							if err
-								console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{err.toString()}"
+								jsonText = ''
+							else
+								try
+									JSON.parse jsonText
+								catch e
+									jsonErr = e
+							if jsonErr
+								console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{jsonErr.toString()}"
 							else
 								fs.readFile mdFile, (err, mdText) ->
-									if err
+									if err and (err.code isnt 'ENOENT')
 										console.log "#{datePrefix()}#{account.name}: [API store settings] #{mdFile}: #{err.toString()}"
 									else
+										if err
+											mdText = ''
 										upload account, pbScript, localScript, jsonText, mdText
 					++nbUploads
 		return nbUploads
