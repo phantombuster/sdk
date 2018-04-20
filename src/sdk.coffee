@@ -14,6 +14,13 @@ datePrefix = () -> (new Date).toLocaleTimeString() + ' - '
 loadConfig = (configPath) ->
 	config = cson.load configPath
 	if validate config
+		for account in config
+			if account.apiKey.indexOf("ENV:") is 0
+				envVar = account.apiKey.replace("ENV:", "")
+				account.apiKey = process.env[envVar]
+				if (typeof(account.apiKey) isnt "string") or (account.apiKey.length < 10) or (account.apiKey.length > 50)
+					console.log "#{account.name}: Environment variable \"#{envVar}\" does not contain a valid API key"
+					process.exit 1
 		return config
 	else
 		console.log "#{datePrefix()}#{configPath} is not a correct SDK configuration file"

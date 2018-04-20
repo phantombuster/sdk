@@ -14,7 +14,7 @@
       },
       "apiKey": {
         "type": "string",
-        "pattern": "^[\\w-]{10,50}$"
+        "pattern": "^[\\w-:]{5,50}$"
       },
       "scripts": {
         "type": "object",
