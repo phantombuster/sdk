@@ -38,84 +38,82 @@ try
 		linkedScriptCoffee = updatedPath.replace(new RegExp(fileType + '$'), 'coffee')
 		mdFile = updatedPath.replace(new RegExp(fileType + '$'), 'md')
 		jsonFile = updatedPath.replace(new RegExp(fileType + '$'), 'json')
-		upload = (account, pbScript, localScript, jsonText, mdText) ->
-			options =
-				headers:
-					'X-Phantombuster-Key-1': account.apiKey
-			payload =
-				infoString: jsonText.toString()
-				markdown: mdText.toString()
-			needle.post "#{account.endpoint or defaultEndpoint}/store-info/by-name/#{pbScript}", payload, options, (err, res) ->
-				if err
-					console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript}: #{err.toString()}"
+		upload = (account, pbScript, localScript) ->
+			fs.readFile jsonFile, (err, jsonText) ->
+				if err and (err.code isnt 'ENOENT')
+					console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{err.toString()}"
 				else
-					if res.body?.status is 'success'
-						console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript} -> #{pbScript}"
+					if err
+						jsonText = ''
 					else
-						console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
-		nbUploads = 0
+						try
+							JSON.parse jsonText
+						catch e
+							jsonErr = e
+					if jsonErr
+						console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{jsonErr.toString()}"
+					else
+						fs.readFile mdFile, (err, mdText) ->
+							if err and (err.code isnt 'ENOENT')
+								console.log "#{datePrefix()}#{account.name}: [API store settings] #{mdFile}: #{err.toString()}"
+							else
+								if err
+									mdText = ''
+								options =
+									headers:
+										'X-Phantombuster-Key-1': account.apiKey
+								payload =
+									infoString: jsonText.toString()
+									markdown: mdText.toString()
+								needle.post "#{account.endpoint or defaultEndpoint}/store-info/by-name/#{pbScript}", payload, options, (err, res) ->
+									if err
+										console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript}: #{err.toString()}"
+									else
+										if res.body?.status is 'success'
+											console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript} -> #{pbScript}"
+										else
+											console.log "#{datePrefix()}#{account.name}: [API store settings] #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
 		for account in config
 			for pbScript, localScript of account.scripts
 				if path.join(baseDir, localScript) in [linkedScriptJs, linkedScriptCoffee]
-					fs.readFile jsonFile, (err, jsonText) ->
-						if err and (err.code isnt 'ENOENT')
-							console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{err.toString()}"
-						else
-							if err
-								jsonText = ''
-							else
-								try
-									JSON.parse jsonText
-								catch e
-									jsonErr = e
-							if jsonErr
-								console.log "#{datePrefix()}#{account.name}: [API store settings] #{jsonFile}: #{jsonErr.toString()}"
-							else
-								fs.readFile mdFile, (err, mdText) ->
-									if err and (err.code isnt 'ENOENT')
-										console.log "#{datePrefix()}#{account.name}: [API store settings] #{mdFile}: #{err.toString()}"
-									else
-										if err
-											mdText = ''
-										upload account, pbScript, localScript, jsonText, mdText
-					++nbUploads
-		return nbUploads
+					upload account, pbScript, localScript
+					return yes
+		return no
 
 	updateScript = (updatedPath) ->
 		fileExt = path.extname(updatedPath)
 		if fileExt in ['.md', '.json']
 			return updateStoreInfo updatedPath, fileExt.replace('.', '')
 		else
-			upload = (account, pbScript, localScript, text) ->
-				options =
-					headers:
-						'X-Phantombuster-Key-1': account.apiKey
-				payload =
-					text: text.toString()
-					source: 'sdk'
-				needle.post "#{account.endpoint or defaultEndpoint}/script/#{pbScript}", payload, options, (err, res) ->
+			upload = (account, pbScript, localScript, updatedPath) ->
+				fs.readFile updatedPath, (err, text) ->
 					if err
 						console.log "#{datePrefix()}#{account.name}: #{localScript}: #{err.toString()}"
 					else
-						if res.body?.status is 'success'
-							console.log "#{datePrefix()}#{account.name}: #{localScript} -> #{pbScript}#{if typeof(res.body.data) is 'number' then ' (new script created)' else ''}"
-						else
-							console.log "#{datePrefix()}#{account.name}: #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
-			nbUploads = 0
-			for account in config
-				for pbScript, localScript of account.scripts
-					if path.join(baseDir, localScript) is updatedPath
-						fs.readFile updatedPath, (err, text) ->
+						options =
+							headers:
+								'X-Phantombuster-Key-1': account.apiKey
+						payload =
+							text: text.toString()
+							source: 'sdk'
+						needle.post "#{account.endpoint or defaultEndpoint}/script/#{pbScript}", payload, options, (err, res) ->
 							if err
 								console.log "#{datePrefix()}#{account.name}: #{localScript}: #{err.toString()}"
 							else
-								upload account, pbScript, localScript, text
-						++nbUploads
-			return nbUploads
+								if res.body?.status is 'success'
+									console.log "#{datePrefix()}#{account.name}: #{localScript} -> #{pbScript}#{if typeof(res.body.data) is 'number' then ' (new script created)' else ''}"
+								else
+									console.log "#{datePrefix()}#{account.name}: #{localScript}: #{if res.body?.status? then res.body.status else "Error"}: #{if res.body?.message? then res.body.message else "HTTP #{res.statusCode}"}"
+			for account in config
+				for pbScript, localScript of account.scripts
+					if path.join(baseDir, localScript) is updatedPath
+						upload account, pbScript, localScript, updatedPath
+						return yes
+			return no
 
 	if argv._?.length
 		for script in argv._
-			if updateScript(fs.realpathSync(script)) < 1
+			if not updateScript(fs.realpathSync(script))
 				console.log "#{datePrefix()}#{script}: Not found in configuration"
 	else
 		watch baseDir, (updatedPath) ->
