@@ -120,8 +120,7 @@ try
 			recursive: yes
 			filter: ((f) -> !/node_modules/.test(f))
 		watch baseDir, watchOptions, (event, updatedPath) ->
-			console.log event, updatedPath
-			if event is "update" or true
+			if event is "update"
 				if updatedPath is configPath
 					config = loadConfig updatedPath
 					console.log "#{datePrefix()}#{updatedPath}: Configuration reloaded"
