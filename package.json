@@ -5,7 +5,8 @@
   "main": "lib/sdk.js",
   "scripts": {
     "test": "echo \"Error: no tests exist\" && exit 1",
-    "prepublish": "coffee --bare -o lib/ -c src/*.coffee && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js"
+    "prepublish": "coffee --bare -o lib/ -c src/*.coffee && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js",
+    "watch": "coffee --bare -w -o lib/ -c src/*.coffee"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,7 @@
     "phantombuster": "lib/sdk.js"
   },
   "devDependencies": {
-    "coffee-script": "*"
+    "coffee-script": "1.11.x"
   },
   "dependencies": {
     "cson": "3.0.x",
