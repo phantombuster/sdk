@@ -2,11 +2,15 @@
   "name": "phantombuster-sdk",
   "version": "0.3.2",
   "description": "Phantombuster's SDK",
-  "main": "lib/sdk.js",
+  "main": "lib/src/sdk.js",
   "scripts": {
     "test": "echo \"Error: no tests exist\" && exit 1",
-    "prepublish": "coffee --bare -o lib/ -c src/*.coffee && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js",
-    "watch": "coffee --bare -w -o lib/ -c src/*.coffee"
+    "lint": "echo 'tslint...' && tslint --project . 'src/*.ts'",
+    "build:models:parallel": "find schemas/* -type f | sed -e 's/\\.json$//' | sed 's,^schemas/,,' | parallel 'echo \"processing schema {}...\" && json2ts --style.useTabs --no-style.semi --cwd $(dirname schemas/{}.json) --input schemas/{}.json --output generated/{}.d.ts --bannerComment \"/**\n* DO NOT MODIFY IT BY HAND. Instead, modify the source JSONSchema file. Run npm run build:models to regenerate it.\n*/\n/* tslint:disable:trailing-comma array-type indent interface-over-type-literal*/\n\" && sed -i.bak -e \"s/ any$/ unknown/g\" generated/{}.d.ts'",
+    "build:models:clean": "find generated/ -name '*.bak' -delete",
+    "build:models": "run-s build:models:parallel build:models:clean",
+    "prepublish": "tsc --diagnostics && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/src/sdk.js",
+    "watch": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -30,16 +34,24 @@
   "homepage": "https://github.com/phantombuster/sdk",
   "preferGlobal": true,
   "bin": {
-    "phantombuster": "lib/sdk.js"
+    "phantombuster": "lib/src/sdk.js"
   },
   "devDependencies": {
-    "coffee-script": "1.11.x"
+    "@types/cson": "0.0.31",
+    "@types/is-my-json-valid": "0.0.20",
+    "@types/needle": "^2.0.4",
+    "@types/node": "^13.7.2",
+    "@types/yargs": "^15.0.3",
+    "json-schema-to-typescript": "^8.0.1",
+    "npm-run-all": "^4.1.5",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
   },
   "dependencies": {
-    "cson": "3.0.x",
-    "is-my-json-valid": "2.12.x",
-    "needle": "0.10.x",
-    "node-watch": "^0.6.2",
-    "yargs": "3.27.x"
+    "ajv": "^6.11.0",
+    "cson": "^6.9.0",
+    "needle": "^2.3.2",
+    "node-watch": "^0.6.3",
+    "yargs": "^15.1.0"
   }
 }
