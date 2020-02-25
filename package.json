@@ -1,15 +1,15 @@
 {
   "name": "phantombuster-sdk",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Phantombuster's SDK",
-  "main": "lib/src/sdk.js",
+  "main": "lib/sdk.js",
   "scripts": {
     "test": "echo \"Error: no tests exist\" && exit 1",
     "lint": "echo 'tslint...' && tslint --project . 'src/*.ts'",
     "build:models:parallel": "find schemas/* -type f | sed -e 's/\\.json$//' | sed 's,^schemas/,,' | parallel 'echo \"processing schema {}...\" && json2ts --style.useTabs --no-style.semi --cwd $(dirname schemas/{}.json) --input schemas/{}.json --output generated/{}.d.ts --bannerComment \"/**\n* DO NOT MODIFY IT BY HAND. Instead, modify the source JSONSchema file. Run npm run build:models to regenerate it.\n*/\n/* tslint:disable:trailing-comma array-type indent interface-over-type-literal*/\n\" && sed -i.bak -e \"s/ any$/ unknown/g\" generated/{}.d.ts'",
     "build:models:clean": "find generated/ -name '*.bak' -delete",
     "build:models": "run-s build:models:parallel build:models:clean",
-    "prepublish": "tsc --diagnostics && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/src/sdk.js",
+    "prepublish": "tsc --diagnostics && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js",
     "watch": "tsc --watch"
   },
   "repository": {
@@ -34,7 +34,7 @@
   "homepage": "https://github.com/phantombuster/sdk",
   "preferGlobal": true,
   "bin": {
-    "phantombuster": "lib/src/sdk.js"
+    "phantombuster": "lib/sdk.js"
   },
   "devDependencies": {
     "@types/cson": "0.0.31",
