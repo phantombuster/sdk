@@ -1,0 +1,102 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "env": {
+        "node": true
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".ts", ".d.ts"]
+            }
+        }
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "prefer-arrow",
+        "chai-friendly"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors"
+    ],
+    "parserOptions": {
+        "project": "tsconfig.json"
+    },
+    "rules": {
+        "quotes": ["error", "double"], // Force usage of double quotes
+        "semi": "off", // Disable errors for semicolons
+        "@typescript-eslint/semi": ["error", "never"], // Disable errors for semicolons
+        "indent": ["error", "tab", {
+            "SwitchCase": 1
+        }], // Force usage of tabs. Force an indent of 1 in switch cases
+        "@typescript-eslint/no-var-requires": "off", // Disallows the use of require statements except in import statements
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "variableLike",
+                "format": ["camelCase", "UPPER_CASE", "snake_case"], // Allow variables to be camelCase, upperCase or snakeCase
+                "leadingUnderscore": "allow",
+                "custom": {
+                    "regex": "^(any|Number|number|String|string|Boolean|boolean|Undefined|undefined)$", // Disable use of those keywords as variable names
+                    "match": false
+                }
+            }
+        ],
+        "no-console": [
+            "error", // Disable console usage except for the following methods and properties:
+            {
+                "allow": [
+                    "log",
+                    "EveryDay",
+                    "EveryHour",
+                    "EveryMinute",
+                    "EveryMinuteIf1",
+                    "EveryMinuteIf2",
+                    "EveryMinuteIf3",
+                    "EveryMinuteIf4",
+                    "EveryMinuteIf5",
+                    "TagPayment",
+                    "TagAccount",
+                    "TagAdmin",
+                    "TagWorkerCycling",
+                    "TagUserExternalSync"
+                ]
+            }
+        ],
+        "@typescript-eslint/no-explicit-any": ["error"], // Disallow the use of "any"
+        "import/order": "off", // Disable errors regarding import order
+        "max-classes-per-file": "off", // Disable errors if multiple classes are declared in a single file
+        "sort-keys": "off", // Disable errors on object key sorting
+        "no-return-await": "error", // Disallow the usage of "return await ..."
+        "@typescript-eslint/no-floating-promises": "error", // Promises returned by functions must be handled appropriately
+        "@typescript-eslint/await-thenable": "error", // Disallows awaiting a value that is not a Thenable
+        "@typescript-eslint/explicit-function-return-type": "off", // Disable errors if a return type is not specified in a function
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+                "types": {
+                    "object": false // Allow the type "object" to be used
+                }
+            }
+        ],
+        "no-case-declarations": "off", // Allow to use variable declarations in switch cases
+        "prefer-const": "error", // Suggest using const when possible
+        "@typescript-eslint/prefer-for-of": "error", // Recommends a ‘for-of’ loop over a standard ‘for’ loop if the index is only used to access the array being iterated
+        "prefer-arrow/prefer-arrow-functions": "error", // Force the usage of arrow functions
+        "@typescript-eslint/explicit-module-boundary-types": "off", // Disable warnings if a return type is not specified in a function
+        "comma-dangle": ["error", "always-multiline"], // Forces the use of comma dangle
+        "@typescript-eslint/array-type": ["error", { "default": "array-simple", "readonly": "array-simple" }], // Force the use of T[] for simple types and Array<T> for more complex types
+        "@typescript-eslint/consistent-type-definitions": ["error", "interface"], // Only allow "interface" to be used
+        "no-async-promise-executor": "off", // Allow to use async in promise executor,
+        "no-multiple-empty-lines": "error", // Disallow multiple empty lines
+        "no-unused-expressions": "off", // Disable the rule because it's handled by chai-friendly/no-unused-expressions
+        "chai-friendly/no-unused-expressions": "error", // Disallow unused expressions except for chai
+        "arrow-parens": "error", // Require parens in arrow function arguments
+        "@typescript-eslint/no-unused-vars": "error", // Make sure no unused variables are declared
+        "function-call-argument-newline": ["error", "consistent"] // Enforce consistent line breaks between arguments of a function call
+    }
+}
+

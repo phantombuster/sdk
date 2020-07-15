@@ -38,7 +38,7 @@ class Sdk {
 		} else {
 			const watchOptions = {
 				recursive: true,
-				filter(f: string) { return !/node_modules/.test(f) }
+				filter: (f: string) => { return !/node_modules/.test(f) },
 			}
 			watch(this._baseDir, watchOptions, (event, updatedPath) => {
 				if (event === "update") {
@@ -63,7 +63,7 @@ class Sdk {
 					const envVar = account.apiKey.replace("ENV:", "")
 					account.apiKey = process.env[envVar]
 					if ((typeof(account.apiKey) !== "string") || (account.apiKey.length < 10) || (account.apiKey.length > 50)) {
-						console.log(`${account.name}: Environment variable \"${envVar}\" does not contain a valid API key`)
+						console.log(`${account.name}: Environment variable "${envVar}" does not contain a valid API key`)
 						process.exit(1)
 					}
 				}
@@ -80,10 +80,9 @@ class Sdk {
 		try {
 			const text = await readFile(updatedPath)
 			const res = await needle("post", `${account.endpoint || defaultEndpoint}/script/${pbScript}`, {
-					text: text.toString(),
-					source: "sdk"
-				}, { headers: { "X-Phantombuster-Key-1": account.apiKey } }
-			)
+				text: text.toString(),
+				source: "sdk",
+			}, { headers: { "X-Phantombuster-Key-1": account.apiKey } })
 			if (res.body.status === "success") {
 				return console.log(`${datePrefix()}${account.name}: ${localScript} -> ${pbScript}${typeof(res.body.data) === "number" ? " (new script created)" : ""}`)
 			} else {
@@ -143,10 +142,9 @@ class Sdk {
 
 		try {
 			const res = await needle("post", `${account.endpoint || defaultEndpoint}/store-info/by-name/${pbScript}`, {
-					infoString: jsonText,
-					markdown: mdText,
-				}, { headers: { "X-Phantombuster-Key-1": account.apiKey } }
-			)
+				infoString: jsonText,
+				markdown: mdText,
+			}, { headers: { "X-Phantombuster-Key-1": account.apiKey } })
 			if (res.body.status === "success") {
 				return console.log(`${datePrefix()}${account.name}: [API store settings] ${localScript} -> ${pbScript}`)
 			} else {

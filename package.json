@@ -5,9 +5,9 @@
   "main": "lib/sdk.js",
   "scripts": {
     "test": "echo \"Error: no tests exist\" && exit 1",
-    "lint": "echo 'tslint...' && tslint --project . 'src/*.ts'",
-    "build:models:parallel": "find schemas/* -type f | sed -e 's/\\.json$//' | sed 's,^schemas/,,' | parallel 'echo \"processing schema {}...\" && json2ts --style.useTabs --no-style.semi --cwd $(dirname schemas/{}.json) --input schemas/{}.json --output generated/{}.d.ts --bannerComment \"/**\n* DO NOT MODIFY IT BY HAND. Instead, modify the source JSONSchema file. Run npm run build:models to regenerate it.\n*/\n/* tslint:disable:trailing-comma array-type indent interface-over-type-literal*/\n\" && sed -i.bak -e \"s/ any$/ unknown/g\" generated/{}.d.ts'",
-    "build:models:clean": "find generated/ -name '*.bak' -delete",
+    "lint": "echo 'eslint...' && eslint 'src/*.ts'",
+    "build:models:parallel": "cd src && find schemas/* -type f | sed -e 's/\\.json$//' | sed 's,^schemas/,,' | parallel 'echo \"processing schema {}...\" && json2ts --style.useTabs --no-style.semi --cwd $(dirname schemas/{}.json) --input schemas/{}.json --output generated/{}.d.ts --bannerComment \"/**\n* DO NOT MODIFY IT BY HAND. Instead, modify the source JSONSchema file. Run npm run build:models to regenerate it.\n*/\n/* eslint-disable @typescript-eslint/array-type, comma-dangle, no-mixed-spaces-and-tabs, @typescript-eslint/ban-types, @typescript-eslint/consistent-type-definitions */\n\" && sed -i.bak -e \"s/ any$/ unknown/g\" generated/{}.d.ts'",
+    "build:models:clean": "find src/generated/ -name '*.bak' -delete",
     "build:models": "run-s build:models:parallel build:models:clean",
     "prepublish": "tsc --diagnostics && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js",
     "watch": "tsc --watch"
@@ -42,9 +42,14 @@
     "@types/needle": "^2.0.4",
     "@types/node": "^13.13.14",
     "@types/yargs": "^15.0.5",
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
+    "eslint": "^7.4.0",
+    "eslint-plugin-chai-friendly": "^0.6.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prefer-arrow": "^1.2.1",
     "json-schema-to-typescript": "^8.2.0",
     "npm-run-all": "^4.1.5",
-    "tslint": "^6.1.2",
     "typescript": "^3.9.6"
   },
   "dependencies": {
