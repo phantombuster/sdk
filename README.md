@@ -7,11 +7,11 @@ Provides the `phantombuster` command to facilitate development of scripts for Ph
 
 To install:
 
-`sudo npm install -g phantombuster-sdk` (recommended)
+`npm install -g phantombuster-sdk` (recommended)
 
 or
 
-`npm install phantombuster-sdk`
+`npm install -D phantombuster-sdk`
 
 For now, the only feature provided is the uploading of scripts via Phantombuster's API.
 
