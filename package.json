@@ -33,7 +33,7 @@
     "phantombuster": "lib/sdk.js"
   },
   "devDependencies": {
-    "coffee-script": "1.11.x"
+    "coffee-script": "1.12.x"
   },
   "dependencies": {
     "cson": "3.0.x",
