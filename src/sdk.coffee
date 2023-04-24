@@ -60,6 +60,7 @@ try
 								if err
 									mdText = ''
 								options =
+									json: true
 									headers:
 										'X-Phantombuster-Key-1': account.apiKey
 								payload =
@@ -91,6 +92,7 @@ try
 						console.log "#{datePrefix()}#{account.name}: #{localScript}: #{err.toString()}"
 					else
 						options =
+							json: true
 							headers:
 								'X-Phantombuster-Key-1': account.apiKey
 						payload =
