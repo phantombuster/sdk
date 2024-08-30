@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "cson": "3.0.x",
-    "is-my-json-valid": "2.12.x",
+    "is-my-json-valid": "^2.20.6",
     "needle": "0.10.x",
     "node-watch": "^0.6.2",
     "yargs": "3.27.x"
