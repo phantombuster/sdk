@@ -1,5 +1,4 @@
-phantombuster-sdk
-=================
+# phantombuster-sdk
 
 https://phantombuster.com/
 
@@ -15,8 +14,7 @@ or
 
 For now, the only feature provided is the uploading of scripts via Phantombuster's API.
 
-phantombuster.cson
-------------------
+## phantombuster.cson
 
 The SDK works with `phantombuster.cson`. This file must be located alongside the scripts, in the same directory (or a parent directory).
 
@@ -36,14 +34,21 @@ This file is simple and self explanatory. The small example below is enough to u
             'some-casperjs-browsing.js': 'folder/script.js'
     ]
 
-Usage
------
+## Usage
 
 `phantombuster [-c config.cson] [script.coffee [other.coffee...]]`
 
-* The most typical usage is to watch for file modification while coding. Simply execute `phantombuster` in a directory containing `phantombuster.cson`.
-* Specify a different file than `phantombuster.cson`: `phantombuster -c config.cson`
-* Upload a specific script to Phantombuster (without watching): `phantombuster project/script.coffee` (must be a value in one of the `scripts` objects in `phantombuster.cson`)
-* Update your whole project: `phantombuster project/*.coffee`
+- The most typical usage is to watch for file modification while coding. Simply execute `phantombuster` in a directory containing `phantombuster.cson`.
+- Specify a different file than `phantombuster.cson`: `phantombuster -c config.cson`
+- Upload a specific script to Phantombuster (without watching): `phantombuster project/script.coffee` (must be a value in one of the `scripts` objects in `phantombuster.cson`)
+- Update your whole project: `phantombuster project/*.coffee`
+
+## Troubleshooting
+
+On MacOS, you might get an error when running the `prepublish` script. This is because of the `sed` command. To run it locally, install gsed (`brew install gnu-sed`) and replace the `publish:` script with:
+
+```
+"prepublish": "coffee --bare -o lib/ -c src/*.coffee && gsed -i'' -e '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js",
+```
 
 See the full documentation here: https://hub.phantombuster.com/docs/sdk
