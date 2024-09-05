@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.json",
+	"exclude": ["./*"],
+	"files": ["src/sdk.ts", "src/configuration.schema.ts"],
+
+	"compilerOptions": {
+		"outDir": "./build",
+		"noEmit": false
+	}
+}
