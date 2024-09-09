@@ -5,7 +5,7 @@
   "main": "lib/sdk.js",
   "scripts": {
     "test": "echo \"Error: no tests exist\" && exit 1",
-    "prepublish": "coffee --bare -o lib/ -c src/*.coffee && sed -i '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js",
+    "prepare": "coffee --bare -o lib/ -c src/*.coffee && sed -i.bak '1s/^/\\#\\!\\/usr\\/bin\\/env node\\n/' lib/sdk.js && rm lib/sdk.js.bak",
     "watch": "coffee --bare -w -o lib/ -c src/*.coffee"
   },
   "repository": {
