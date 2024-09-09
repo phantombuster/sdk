@@ -149,7 +149,7 @@ afterEach(() => {
 })
 
 describe.each([
-	"./sdk.js", //old sdk
+	"../lib/sdk.js", //old sdk
 	"./sdk.ts", //new sdk
 ] as const)("sdk %s", (sdkPath) => {
 	it("should launch watch if started with only config argument", async () => {

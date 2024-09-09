@@ -5,8 +5,10 @@
 	"main": "build/sdk.js",
 	"scripts": {
 		"test": "echo \"Error: no tests exist\" && exit 1",
-		"prepublish": "npx tsc -p tsconfig.prod.json",
-		"watch": "npx tsc -p tsconfig.prod.json --watch"
+		"prepublish": "npm run build",
+		"prepublishOnly": "npm run build",
+		"build": "npx tsc -p tsconfig.prod.json",
+		"watch": "npm run build -- --watch"
 	},
 	"repository": {
 		"type": "git",

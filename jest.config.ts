@@ -6,7 +6,7 @@ const config: JestConfigWithTsJest = {
 	transform: {
 		"^.+\\.ts$": "@swc/jest",
 	},
-	modulePathIgnorePatterns: [".*.js"],
+	modulePathIgnorePatterns: [".*__fixtures__.*.js"],
 	collectCoverageFrom: [
 		"src/**/*.ts",
 		"src/**/*.js",
@@ -16,10 +16,10 @@ const config: JestConfigWithTsJest = {
 	],
 	coverageThreshold: {
 		global: {
-			branches: 0,
-			functions: 0,
-			lines: 0,
-			statements: 0,
+			branches: 90,
+			functions: 90,
+			lines: 90,
+			statements: 90,
 		},
 	},
 }
