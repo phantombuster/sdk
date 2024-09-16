@@ -297,7 +297,7 @@ describe.each([
 	describe("script file change", () => {
 		const file = "src/__fixtures__/test.js"
 
-		it("should not log if script does not exists bis", async () => {
+		it("should not log if script does not exists", async () => {
 			const sut = getSut(sdkPath)
 			sut.given.cmdArguments("src/__fixtures__/config.json")
 			sut.given.apiAnswer({

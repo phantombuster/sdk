@@ -4,7 +4,7 @@
 	"description": "Phantombuster's SDK",
 	"main": "build/sdk.js",
 	"scripts": {
-		"test": "echo \"Error: no tests exist\" && exit 1",
+		"test": "jest",
 		"prepublish": "npm run build",
 		"prepublishOnly": "npm run build",
 		"build": "npx tsc -p tsconfig.prod.json",
@@ -52,7 +52,6 @@
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-deprecation": "^3.0.0",
-		"eslint-plugin-diff": "^2.0.3",
 		"eslint-plugin-jest": "^28.8.2",
 		"eslint-plugin-jest-formatting": "^3.1.0",
 		"eslint-plugin-prefer-arrow": "^1.2.3",
