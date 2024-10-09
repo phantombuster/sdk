@@ -7,3 +7,8 @@
 node_modules/
 test/
 src/
+coverage/
+lib/
+.*
+jest.config.ts
+tsconfig.*
