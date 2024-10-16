@@ -1,0 +1,8 @@
+{
+	"name": "library",
+	"apiKey": "ENV:LIBRARY_API_KEY",
+	"endpoint": "https://api-staging.phantombuster.io/api/v1",
+	"scripts": {
+		"Test.js": "./test.js"
+	}
+}
